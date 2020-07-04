@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+  <meta charset='UTF-8'>
+  <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+  <title>Drag & Drop</title>
+</head>
+<body>
+  <ul id="columns">
+    <li class="column" draggable="true"><header>ぺんぎんクッキー</header></li>
+    <li class="column" draggable="true"><header>あひるサブレ</header></li>
+    <li class="column" draggable="true"><header>しろくまアイス</header></li>
+    <li class="column" draggable="true"><header>にわとりタルト</header></li>
+    <li class="column" draggable="true"><header>かるがもクラッカー</header></li>
+  </ul>
+
+  <!-- スタイル -->
+  <style>
+    [draggable] {
+      user-select: none;
+    }
+
+    #columns {
+      list-style-type: none;
+    }
+
+    .column {
+      width: 200px;
+      padding-bottom: 5px;
+      padding-top: 5px;
+      text-align: center;
+      cursor: move;
+    }
+
+    .column header {
+      height: 20px;
+      width: 200px;
+      color: black;
+      background-color: #ccc;
+      border: 2px solid #666666;
+    }
+
+    .column.dragElem {
+      opacity: 0.4;
+    }
+
+    .column.over {
+      border-top: 2px solid blue;
+    }
+  </style>
+
+  <!-- JS -->
+  <script type="text/javascript">
+    let dragSrcEl = null;
+
+    function handleDragStart(e) {
+      dragSrcEl = this;
+      e.dataTransfer.effectAllowed = 'move';
+      e.dataTransfer.setData('text/html', this.outerHTML);
+      this.classList.add('dragElem');
+    }
+
+    function handleDragOver(e) {
+      if (e.preventDefault) {
+        e.preventDefault();
+      }
+      this.classList.add('over');
+      e.dataTransfer.dropEffect = 'move';
+      return false;
+    }
+
+    function handleDragEnter(e) {
+    }
+
+    function handleDragLeave(e) {
+      this.classList.remove('over');
+    }
+
+    function handleDrop(e) {
+      if (e.stopPropagation) {
+        e.stopPropagation();
+      }
+
+      if (dragSrcEl != this) {
+        this.parentNode.removeChild(dragSrcEl);
+        var dropHTML = e.dataTransfer.getData('text/html');
+        this.insertAdjacentHTML('beforebegin', dropHTML);
+        var dropElem = this.previousSibling;
+        addDnDHandlers(dropElem);
+
+      }
+      this.classList.remove('over');
+      return false;
+    }
+
+    function handleDragEnd(e) {
+      this.classList.remove('over');
+    }
+
+    function addDnDHandlers(elem) {
+      elem.addEventListener('dragstart', handleDragStart, false);
+      elem.addEventListener('dragenter', handleDragEnter, false)
+      elem.addEventListener('dragover', handleDragOver, false);
+      elem.addEventListener('dragleave', handleDragLeave, false);
+      elem.addEventListener('drop', handleDrop, false);
+      elem.addEventListener('dragend', handleDragEnd, false);
+    }
+
+    function PageLoad() {
+      var cols = document.querySelectorAll('#columns .column');
+      [].forEach.call(cols, addDnDHandlers);
+    }
+  </script>
+</body>
+</html>
