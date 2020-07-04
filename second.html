@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+  <meta charset='UTF-8'>
+  <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+  <title>Document</title>
+</head>
+<body>
+  <ul>
+    <li draggable="true" ondragstart="dragStarted(event)" ondragover="draggingOver(event)" ondrop="dropped(event)">おすすめ</li>
+    <li draggable="true" ondragstart="dragStarted(event)" ondragover="draggingOver(event)" ondrop="dropped(event)">UI</li>
+    <li draggable="true" ondragstart="dragStarted(event)" ondragover="draggingOver(event)" ondrop="dropped(event)">グラフィック</li>
+    <li draggable="true" ondragstart="dragStarted(event)" ondragover="draggingOver(event)" ondrop="dropped(event)">UX・戦略</li>
+    <li draggable="true" ondragstart="dragStarted(event)" ondragover="draggingOver(event)" ondrop="dropped(event)">ブランド</li>
+    <li draggable="true" ondragstart="dragStarted(event)" ondragover="draggingOver(event)" ondrop="dropped(event)">モーション</li>
+    <li draggable="true" ondragstart="dragStarted(event)" ondragover="draggingOver(event)" ondrop="dropped(event)">イラスト</li>
+  </ul>
+  <style>
+    body {
+        min-height: 100vh;
+        scroll-behavior: smooth;
+        text-rendering: optimizeSpeed;
+        line-height: 1.5;
+        font-weight: 500; /* Winの游ゴシック対策 */
+        font-family: 'DIN', 'Helvetica', '游ゴシック Medium', 'Yu Gothic Medium', '游ゴシック体', YuGothic,
+            'a-otf-midashi-go-mb31-pr6n', 'Hiragino Kaku Gothic ProN', Meiryo, sans-serif;
+        font-feature-settings: 'palt' 1;
+        -webkit-font-smoothing: antialiased;
+        background-color: #fafafa;
+        display: flex;
+    }
+
+    ul {
+      margin: auto;
+      width: 80%;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    li {
+      color: #333333;
+      list-style-type: none;
+      padding: 4px 16px;
+      margin: 2px;
+      font-weight: bold;
+      width: max-content;
+      border-radius: 24px;
+    }
+    li:hover {
+      color: #ffffff;
+      background-color: #2176FF;
+    }
+  </style>
+  <script type="text/javascript">
+    var source;
+
+    function dragStarted(evt) {
+      source = evt.target;
+      evt.dataTransfer.setData("text/plain", evt.target.innerHTML);
+      evt.dataTransfer.effectAllowed = "move";
+    }
+
+    function draggingOver(evt) {
+      evt.preventDefault();
+      evt.dataTransfer.dropEffect = "move";
+    }
+
+    function dropped(evt) {
+      evt.preventDefault();
+      evt.stopPropagation();
+      source.innerHTML = evt.target.innerHTML;
+      evt.target.innerHTML = evt.dataTransfer.getData("text/plain");
+    }
+  </script>
+</body>
+</html>
