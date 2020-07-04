@@ -53,14 +53,14 @@
   <script type="text/javascript">
     let dragSrcEl = null;
 
-    function handleDragStart(e) {
+    const handleDragStart = (e) => {
       dragSrcEl = this;
       e.dataTransfer.effectAllowed = 'move';
       e.dataTransfer.setData('text/html', this.outerHTML);
       this.classList.add('dragElem');
     }
 
-    function handleDragOver(e) {
+    const handleDragOver = (e) => {
       if (e.preventDefault) {
         e.preventDefault();
       }
@@ -69,23 +69,23 @@
       return false;
     }
 
-    function handleDragEnter(e) {
+    const handleDragEnter = (e) => {
     }
 
-    function handleDragLeave(e) {
+    const handleDragLeave = (e) => {
       this.classList.remove('over');
     }
 
-    function handleDrop(e) {
+    const handleDrop = (e) => {
       if (e.stopPropagation) {
         e.stopPropagation();
       }
 
       if (dragSrcEl != this) {
         this.parentNode.removeChild(dragSrcEl);
-        var dropHTML = e.dataTransfer.getData('text/html');
+        let dropHTML = e.dataTransfer.getData('text/html');
         this.insertAdjacentHTML('beforebegin', dropHTML);
-        var dropElem = this.previousSibling;
+        let dropElem = this.previousSibling;
         addDnDHandlers(dropElem);
 
       }
@@ -93,11 +93,11 @@
       return false;
     }
 
-    function handleDragEnd(e) {
+    const handleDragEnd = (e) => {
       this.classList.remove('over');
     }
 
-    function addDnDHandlers(elem) {
+    const addDnDHandlers = (elem) => {
       elem.addEventListener('dragstart', handleDragStart, false);
       elem.addEventListener('dragenter', handleDragEnter, false)
       elem.addEventListener('dragover', handleDragOver, false);
@@ -106,8 +106,8 @@
       elem.addEventListener('dragend', handleDragEnd, false);
     }
 
-    function PageLoad() {
-      var cols = document.querySelectorAll('#columns .column');
+    const PageLoad = () => {
+      let cols = document.querySelectorAll('#columns .column');
       [].forEach.call(cols, addDnDHandlers);
     }
   </script>
